@@ -1,6 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Home, List, Heart, Shuffle, Info, Search } from "react-feather";
+import {
+  Home,
+  List,
+  Heart,
+  Shuffle,
+  Info,
+  Search,
+  Bookmark,
+} from "react-feather";
 import { UserCircle } from "lucide-react";
 
 const SideNavBar = () => {
@@ -22,15 +30,25 @@ const SideNavBar = () => {
             />
           </div>
 
-          <div className="flex items-center py-2.5 px-4 rounded-md border-1 w-[80%] cursor-pointer bg-red-500">
+          <Link
+            to="/"
+            className="flex items-center py-2.5 px-4 rounded-md border-1 w-[80%] cursor-pointer bg-red-500"
+          >
             <Home className="text-gray-100 mr-2" size={20} />
             <span className={`text-gray-100 ml-1`}>Home Page</span>
-          </div>
+          </Link>
 
           <div className="border-b-2 border-gray-300 w-[80%]"></div>
+          <Link
+            to="/favorites"
+            className="flex items-center py-2.5 px-4 rounded-md border-1 w-[80%] cursor-pointer bg-gray-200"
+          >
+            <Bookmark fill="red" className="text-red-500 mr-2" size={20} />
+            <span className={`text-gray-800 ml-1`}>Favorites Movies List</span>
+          </Link>
 
           <div className="flex items-center px-4 rounded-md border-1 w-[80%] cursor-pointer">
-            <h1 className="text-4xl">My Lists</h1>
+            <h1 className="text-2xl">My Lists</h1>
           </div>
         </nav>
 

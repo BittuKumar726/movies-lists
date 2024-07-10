@@ -1,8 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SideNavBar from "./components/SideNavBar";
+import SideNavBar from "./pages/SideNavBar";
 import Home from "./pages/Home";
-import { FavoritesContextProvider } from "./components/ContextApi";
+import { FavoritesContextProvider } from "./api/ContextApi";
+import Favorites from "./pages/Favorites";
 
 const App = () => {
   return (
@@ -14,9 +15,11 @@ const App = () => {
             <SideNavBar />
           </div>
 
-          {/* Main content area */}
           <div className="flex-1 w-[78%]">
-            <Home />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/favorites" element={<Favorites />} />
+            </Routes>
           </div>
         </div>
       </Router>

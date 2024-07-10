@@ -6,41 +6,53 @@ import LoadingSpinner from "../components/loader";
 
 const apiUrl = "http://www.omdbapi.com";
 const API_KEY = "841a04a5";
+
 const Home = () => {
   const [title, setTitle] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  console.log({ data, title });
+
   const getMovieList = async (title) => {
     setData([]);
     setLoading(true);
     try {
-      const res = await fetch(`${apiUrl}/?s=${title}&apikey=${API_KEY}&`);
+      const res = await fetch(`${apiUrl}/?s=${title}&apikey=${API_KEY}`);
       const resData = await res.json();
-      if (resData?.Response) {
-        resData.Search.forEach((item, index) => {
-          getMovieListByIds(item?.imdbID);
-        });
+      if (resData?.Response === "True") {
+        const moviePromises = resData.Search.map((item) =>
+          getMovieListByIds(item.imdbID)
+        );
+        const movieResults = await Promise.all(moviePromises);
+        const validMovies = movieResults
+          .filter((result) => result.success)
+          .map((result) => result.resData);
+        setData(validMovies);
       } else {
         setData([]);
       }
     } catch (error) {
-      console.log("error", error);
+      console.error("Error fetching movie list:", error);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000); // Delay of 2 seconds
     }
   };
 
   const getMovieListByIds = async (mId) => {
     try {
-      const res = await fetch(`${apiUrl}/?i=${mId}&apikey=${API_KEY}&`);
-
+      const res = await fetch(`${apiUrl}/?i=${mId}&apikey=${API_KEY}`);
       const resData = await res.json();
-      setData((prevData) => [...prevData, resData]);
-      return;
+      return {
+        success: true,
+        resData: resData,
+      };
     } catch (error) {
-      console.log("error", error);
-      return;
+      console.error("Error fetching movie by ID:", error);
+      return {
+        success: false,
+        resData: null,
+      };
     }
   };
 
@@ -49,19 +61,26 @@ const Home = () => {
     setLoading(true);
     try {
       const movieTitle = title.trim();
-      const res = await fetch(`${apiUrl}/?s=${movieTitle}&apikey=${API_KEY}&`);
+      const res = await fetch(`${apiUrl}/?s=${movieTitle}&apikey=${API_KEY}`);
       const resData = await res.json();
-      if (resData?.Response) {
-        resData.Search.forEach((item, index) => {
-          getMovieListByIds(item?.imdbID);
-        });
+      if (resData?.Response === "True") {
+        const moviePromises = resData.Search.map((item) =>
+          getMovieListByIds(item.imdbID)
+        );
+        const movieResults = await Promise.all(moviePromises);
+        const validMovies = movieResults
+          .filter((result) => result.success)
+          .map((result) => result.resData);
+        setData(validMovies);
       } else {
         setData([]);
       }
     } catch (error) {
-      console.log("error", error);
+      console.error("Error searching for movies:", error);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000); // Delay of 2 seconds
     }
   };
 
@@ -113,33 +132,32 @@ const Home = () => {
         </div>
       </div>
 
-      {data.length <= 0 ? (
-        <>
-          {loading ? (
-            <div className="h-[50%]">
-              <LoadingSpinner loadingText={"loading..."} />
-            </div>
-          ) : (
-            <div className="items-center mt-[80px] ">
-              <h1> Movies not found!!</h1>
-            </div>
-          )}
-        </>
+      {loading ? (
+        <div className="flex justify-center items-center h-96">
+          <LoadingSpinner loadingText="Loading..." />
+        </div>
       ) : (
         <div className="p-4 w-[92%] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {data.map((item, idx) => {
-            const movie = {
-              title: item.Title,
-              year: item.Year,
-              poster: item.Poster, // Replace with actual URL
-              rating: parseInt(item.imdbRating) * 10,
-            };
-            return (
-              <div key={`${item?.Title}-${idx}`}>
-                <MovieCard key={idx} movie={movie} />
-              </div>
-            );
-          })}
+          {data.length > 0 ? (
+            data.map((item, idx) => {
+              const movie = {
+                title: item.Title,
+                year: item.Year,
+                poster: item.Poster,
+                rating: parseInt(item.imdbRating) * 10,
+                imdbID: item.imdbID,
+              };
+              return (
+                <div key={`${item?.Title}-${idx}`}>
+                  <MovieCard movie={movie} />
+                </div>
+              );
+            })
+          ) : (
+            <div className="col-span-full text-center">
+              <h1>No movies found!!</h1>
+            </div>
+          )}
         </div>
       )}
     </div>
