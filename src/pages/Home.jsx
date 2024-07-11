@@ -5,7 +5,7 @@ import MovieCard from "../components/Card";
 import LoadingSpinner from "../components/loader";
 
 const apiUrl = "http://www.omdbapi.com";
-const API_KEY = "841a04a5";
+const API_KEY = "8fd874db";
 
 const Home = () => {
   const [title, setTitle] = useState("");
