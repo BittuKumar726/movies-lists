@@ -3,9 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Search } from "react-feather";
 import MovieCard from "../components/Card";
 import LoadingSpinner from "../components/loader";
-
-const apiUrl = "https://www.omdbapi.com";
-const API_KEY = "841a04a5";
+import { omdbApiById, omdbApiByTitle } from "../services/omdbapi";
 
 const Home = () => {
   const [title, setTitle] = useState("");
@@ -16,7 +14,7 @@ const Home = () => {
     setData([]);
     setLoading(true);
     try {
-      const res = await fetch(`${apiUrl}/?s=${title}&apikey=${API_KEY}`);
+      const res = await omdbApiByTitle(title);
       const resData = await res.json();
       if (resData?.Response === "True") {
         const moviePromises = resData.Search.map((item) =>
@@ -41,7 +39,7 @@ const Home = () => {
 
   const getMovieListByIds = async (mId) => {
     try {
-      const res = await fetch(`${apiUrl}/?i=${mId}&apikey=${API_KEY}`);
+      const res = await omdbApiById(mId);
       const resData = await res.json();
       return {
         success: true,
@@ -61,7 +59,7 @@ const Home = () => {
     setLoading(true);
     try {
       const movieTitle = title.trim();
-      const res = await fetch(`${apiUrl}/?s=${movieTitle}&apikey=${API_KEY}`);
+      const res = await omdbApiByTitle(title);
       const resData = await res.json();
       if (resData?.Response === "True") {
         const moviePromises = resData.Search.map((item) =>

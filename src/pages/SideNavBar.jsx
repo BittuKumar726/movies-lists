@@ -12,6 +12,7 @@ import {
 import { UserCircle } from "lucide-react";
 
 const SideNavBar = () => {
+  const isLoggedIn = false;
   return (
     // Main container with full height
     <div className="flex h-screen">
@@ -53,11 +54,28 @@ const SideNavBar = () => {
         </nav>
 
         <div className="mt-auto px-1 mb-8 flex items-center justify-center w-full">
-          <div className="flex items-center rounded-md border-2 border-gray-300 py-2 w-[80%]">
-            <UserCircle className="text-gray-500 mr-2 ml-4" />
-            <span className="text-gray-700 ml-1">Guest User</span>
-            <div className="ml-auto mr-4 cursor-pointer">•••</div>
-          </div>
+          {isLoggedIn ? (
+            <div className="flex items-center rounded-md border-2 border-gray-300 py-2 w-[80%]">
+              <UserCircle className="text-gray-500 mr-2 ml-4" />
+              <span className="text-gray-700 ml-1">Guest User</span>
+              <div className="ml-auto mr-4 cursor-pointer">•••</div>
+            </div>
+          ) : (
+            <div className="flex-grow mt-4 flex items-center gap-4 w-[50%] pr-6 pl-6">
+              <Link
+                to="/login"
+                className="flex justify-center items-center py-2.5 px-4 rounded-md border-1 w-[50%] cursor-pointer bg-gray-200"
+              >
+                <span className={`text-red-500 ml-1`}>Login</span>
+              </Link>
+              <Link
+                to="/signup"
+                className="flex justify-center items-center py-2.5 px-4 rounded-md border-1 w-[50%] cursor-pointer bg-gray-200"
+              >
+                <span className={`text-red-500 ml-1`}>Signup</span>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>
