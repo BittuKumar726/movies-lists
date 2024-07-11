@@ -34,8 +34,8 @@ const SideNavBar = () => {
             to="/"
             className="flex items-center py-2.5 px-4 rounded-md border-1 w-[80%] cursor-pointer bg-red-500"
           >
-            <Home className="text-gray-100 mr-2" size={20} />
-            <span className={`text-gray-100 ml-1`}>Home Page</span>
+            <Home className="text-white mr-2" size={20} />
+            <span className={`text-white ml-1`}>Home</span>
           </Link>
 
           <div className="border-b-2 border-gray-300 w-[80%]"></div>
