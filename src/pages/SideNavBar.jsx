@@ -1,20 +1,27 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import {
-  Home,
-  List,
-  Heart,
-  Shuffle,
-  Info,
-  Search,
-  Bookmark,
-} from "react-feather";
 import { UserCircle } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import Avatar from "react-avatar";
+import { Bookmark, Home, Search } from "react-feather";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { getCurrentUser } from "../store/reducer/AuthReducer";
+import Logout from "./Logout";
 
 const SideNavBar = () => {
-  const isLoggedIn = false;
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.currentUser);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+  const toggleDropdown = () => {
+    setDropdownVisible((prev) => !prev);
+  };
+
   return (
-    // Main container with full height
     <div className="flex h-screen">
       <div className="fixed inset-y-0 left-0 z-50 flex flex-col w-[22%] border-r-2 border-gray-300">
         <div className="flex items-center justify-center h-16 px-4">
@@ -55,10 +62,28 @@ const SideNavBar = () => {
 
         <div className="mt-auto px-1 mb-8 flex items-center justify-center w-full">
           {isLoggedIn ? (
-            <div className="flex items-center rounded-md border-2 border-gray-300 py-2 w-[80%]">
-              <UserCircle className="text-gray-500 mr-2 ml-4" />
-              <span className="text-gray-700 ml-1">Guest User</span>
-              <div className="ml-auto mr-4 cursor-pointer">•••</div>
+            <div className="relative flex items-center rounded-md border-2 border-gray-300 py-2 w-[80%]">
+              {currentUser?.avatar ? (
+                <Avatar size="30" src={currentUser.avatar} round={true} />
+              ) : (
+                <UserCircle className="text-gray-500 mr-2 ml-4" />
+              )}
+
+              <span className="text-gray-700 ml-1">
+                {currentUser?.fullName ? currentUser.fullName : "Guest User"}
+              </span>
+              <div
+                className="ml-auto mr-4 cursor-pointer"
+                onClick={toggleDropdown}
+              >
+                •••
+              </div>
+
+              {dropdownVisible && (
+                <div className="absolute right-0 bottom-full mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
+                  <Logout />
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex-grow mt-4 flex items-center gap-4 w-[50%] pr-6 pl-6">

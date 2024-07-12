@@ -1,16 +1,28 @@
-import api from "./authAPI";
+import api from "./axiosinstance";
 
 export const registerUser = async (userData) => {
-  const response = await api.post("/api/users/register", userData);
-  return response;
+  try {
+    const response = await api.post("/api/users/register", userData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const loginUser = async (userData) => {
-  const response = await api.post("/api/users/login", userData);
-  return response;
+  try {
+    const response = await api.post("/api/users/login", userData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const getCurrentUserDetails = async (token) => {
-  const response = await api.get("/api/user/details");
-  return response;
+export const getCurrentUserDetails = async () => {
+  try {
+    const response = await api.get("/api/users/details");
+    return response;
+  } catch (error) {
+    throw error;
+  }
 };

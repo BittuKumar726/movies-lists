@@ -6,7 +6,7 @@ import {
 
 const axiosInstance = () => {
   const defaultOptions = {
-    baseURL: `${process.env.REACT_APP_BACKEND}`,
+    baseURL: `${import.meta.env.VITE_API_URL}`,
     method: "get",
     timeout: AUTH_MAX_REQ_TIME_OUT_MS,
   };
@@ -17,18 +17,12 @@ const axiosInstance = () => {
 
 const processInstanceRequest = (instance) => {
   instance.interceptors.request.use((config) => {
-    if (!config.url.includes("/login")) {
+    if (!config?.url?.includes("/login")) {
       const userToken =
         JSON.parse(localStorage.getItem(`${LS_KEY_USER_TOKENS}`))
           ?.AccessToken || "";
       config.headers["Authorization"] = userToken ? `Bearer ${userToken}` : "";
     }
-    config.headers.current_timestamp = new Date().toISOString();
-    config.headers = {
-      ...config.headers,
-      "Content-Language": "en",
-      "Accept-Language": "en",
-    };
     return config;
   });
   return instance;
@@ -38,7 +32,19 @@ const processInstanceResponse = (instance) => {
   instance.interceptors.response.use(
     (response) => response,
     async (error) => {
-      return Promise.reject(error);
+      if (error) {
+        return Promise.reject({
+          success: error?.response?.data?.success,
+          message: error?.response?.data?.message,
+          statusCode: error?.response?.status,
+        });
+      } else {
+        return Promise.reject({
+          success: false,
+          message: "Unauthorized",
+          statusCode: 400,
+        });
+      }
     }
   );
   return instance;
