@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store/reducer/AuthReducer";
 import { toast } from "react-toastify";
-import { handleLoginNavigation } from "./Common";
+import { handleLoginNavigation } from "../general/Common";
 
 const Logout = () => {
   const dispatch = useDispatch();

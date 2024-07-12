@@ -1,11 +1,13 @@
 import { lazy, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import HomeButton from "../general/HomeButton";
 import SuspensionWrapper from "../general/Suspension";
 import { signup } from "../store/reducer/AuthReducer";
+import { handleLoginNavigation } from "../general/Common";
+import LoadingSpinner from "../components/loader";
 
 const LeftSlider = lazy(() => import("../general/LeftSlider"));
 
@@ -19,10 +21,9 @@ const SignUp = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
-
+  const isLoading = useSelector((state) => state.isLoading);
+  console.log({ isLoading });
   const onSubmit = async (data) => {
-    setLoading(true);
     try {
       if (data.password !== data.confirmPassword) {
         toast.error("Passwords do not match", {
@@ -31,11 +32,16 @@ const SignUp = () => {
         return;
       }
 
-      const { payload } = await dispatch(signup(data));
+      const resData = {
+        ...data,
+        avatar: data?.avatar[0],
+      };
+
+      const { payload } = await dispatch(signup(resData));
       if (!payload?.success) {
         throw payload;
       }
-      toast.success(dataResponse?.message, {
+      toast.success(payload?.message, {
         position: "top-center",
       });
       handleLoginNavigation("/login", navigate);
@@ -43,11 +49,9 @@ const SignUp = () => {
       toast.error(error?.message, {
         position: "top-center",
       });
-      console.log({ error });
-    } finally {
-      setLoading(false);
     }
   };
+
   return (
     <>
       <SuspensionWrapper>
@@ -132,13 +136,31 @@ const SignUp = () => {
                   </span>
                 )}
               </div>
+
+              <div className="mb-4">
+                <label htmlFor="avatar" className="block text-gray-600 mb-2">
+                  Upload photo
+                </label>
+                <input
+                  type="file"
+                  id="avatar"
+                  placeholder="Upload your photo"
+                  className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
+                  {...register("avatar", { required: true })}
+                />
+                {errors.avatar && (
+                  <span className="text-sm text-red-500">
+                    This field is required
+                  </span>
+                )}
+              </div>
               <div className="mb-3">
                 <button
                   type="submit"
-                  className="btn w-full  text-white py-2 px-4 rounded-md bg-red-500  hover:bg-red-300 focus:bg-red-300"
+                  className="flex justify-center gap-1 btn w-full  text-white py-2 px-4 rounded-md bg-red-500  hover:bg-red-400"
                 >
-                  {loading ? (
-                    <span className="loading loading-spinner"></span>
+                  {isLoading ? (
+                    <LoadingSpinner size={20} color="white" />
                   ) : null}
                   Signup
                 </button>

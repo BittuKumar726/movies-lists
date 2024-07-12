@@ -17,11 +17,17 @@ const axiosInstance = () => {
 
 const processInstanceRequest = (instance) => {
   instance.interceptors.request.use((config) => {
-    if (!config?.url?.includes("/login")) {
+    if (
+      !config?.url?.includes("/login") &&
+      !config?.url?.includes("register")
+    ) {
       const userToken =
         JSON.parse(localStorage.getItem(`${LS_KEY_USER_TOKENS}`))
           ?.AccessToken || "";
       config.headers["Authorization"] = userToken ? `Bearer ${userToken}` : "";
+    }
+    if (config?.url?.includes("register")) {
+      config.headers["Content-Type"] = "multipart/form-data";
     }
     return config;
   });

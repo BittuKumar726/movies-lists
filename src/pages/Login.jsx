@@ -5,10 +5,11 @@ import { toast } from "react-toastify";
 // import authApi from "../api/authApi";
 import HomeButton from "../general/HomeButton";
 import { LS_KEY_USER_TOKENS } from "../utils/constants";
-import { handleLoginNavigation } from "./Common";
 import SuspensionWrapper from "../general/Suspension";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../store/reducer/AuthReducer";
+import { handleLoginNavigation } from "../general/Common";
+import LoadingSpinner from "../components/loader";
 
 const LeftSlider = lazy(() => import("../general/LeftSlider"));
 
@@ -91,10 +92,10 @@ const Login = () => {
               <div className="mb-4">
                 <button
                   type="submit"
-                  className="btn w-full  text-white py-2 px-4 rounded-md bg-red-500  hover:bg-red-300 focus:bg-red-300"
+                  className="btn flex justify-center w-full  text-white py-2 px-4 rounded-md bg-red-500  hover:bg-red-300 focus:bg-red-300"
                 >
                   {isLoading ? (
-                    <span className="loading loading-spinner"></span>
+                    <LoadingSpinner size={20} color="white" />
                   ) : null}
                   Login
                 </button>
@@ -107,10 +108,7 @@ const Login = () => {
               </div>
               <div>
                 👉 Do not have Account?{" "}
-                <Link
-                  to="/signup"
-                  className="text-red-500 hover:text-red-300 focus:red-red-300"
-                >
+                <Link to="/signup" className="text-red-500 hover:text-red-400">
                   Signup here
                 </Link>
               </div>
