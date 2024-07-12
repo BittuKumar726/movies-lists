@@ -11,12 +11,12 @@ const SideNavBar = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser);
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [dispatch]);
+
   const toggleDropdown = () => {
     setDropdownVisible((prev) => !prev);
   };
