@@ -11,6 +11,9 @@ import { FavoritesContextProvider } from "./api/ContextApi";
 import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
+import { Provider } from "react-redux";
+import store from "./store";
+import "react-toastify/dist/ReactToastify.css";
 
 const AppContent = () => {
   const location = useLocation();
@@ -40,7 +43,9 @@ const App = () => {
   return (
     <FavoritesContextProvider>
       <Router>
-        <AppContent />
+        <Provider store={store}>
+          <AppContent />
+        </Provider>
       </Router>
     </FavoritesContextProvider>
   );

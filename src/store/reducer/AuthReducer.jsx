@@ -4,20 +4,22 @@ import {
   loginUser,
   registerUser,
 } from "../../services/authAPI";
+import { LS_KEY_USER_TOKENS } from "../../utils/constants";
 
 const initialState = {
   currentUser: undefined,
+  isLoggedIn: false,
   isLoading: false,
 };
 
-export const register = createAsyncThunk(
-  "auth/register",
+export const signup = createAsyncThunk(
+  "auth/signup",
   async (userData, thunkAPI) => {
     try {
       const response = await registerUser(userData);
-      return response.data.user;
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.errors);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -27,9 +29,9 @@ export const login = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await loginUser(userData);
-      return response.data.user;
+      return response.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.errors);
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
@@ -38,16 +40,24 @@ export const getCurrentUser = createAsyncThunk(
   "auth/getCurrentUser",
   async (_, thunkAPI) => {
     try {
+      const token = localStorage.getItem(LS_KEY_USER_TOKENS);
+      if (!token) {
+        return thunkAPI.abort();
+      }
       const response = await getCurrentUserDetails();
-      return response.data.user;
+
+      return response.data;
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data.errors);
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  localStorage.removeItem("accessToken");
+  localStorage.removeItem(LS_KEY_USER_TOKENS);
+  return {
+    success: true,
+  };
 });
 
 const authSlice = createSlice({
@@ -55,22 +65,24 @@ const authSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state) => {
+      .addCase(signup.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(register.fulfilled, (state, action) => {
+      .addCase(signup.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentUser = action.payload;
       })
-      .addCase(register.rejected, (state) => {
+      .addCase(signup.rejected, (state) => {
         state.isLoading = false;
       })
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
+        console.log(action?.payload);
         state.isLoading = false;
-        state.currentUser = action.payload;
+        state.currentUser = action?.payload;
+        state.isLoggedIn = true;
       })
       .addCase(login.rejected, (state) => {
         state.isLoading = false;
@@ -80,15 +92,18 @@ const authSlice = createSlice({
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentUser = action.payload;
+        state.currentUser = action.payload?.data;
+        state.isLoggedIn = true;
       })
       .addCase(getCurrentUser.rejected, (state) => {
         state.isLoading = false;
-        state.currentUser = null;
+        state.currentUser = undefined;
       })
-      .addCase(logout.fulfilled, (state) => {
+      .addCase(logout.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentUser = null;
+        state.currentUser = undefined;
+        state.success = action.success;
+        state.isLoggedIn = false;
       });
   },
 });

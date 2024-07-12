@@ -1,11 +1,11 @@
 import { lazy, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-// import authApi from "../api/authApi";
 import HomeButton from "../general/HomeButton";
-import { handleLoginNavigation } from "./Common";
 import SuspensionWrapper from "../general/Suspension";
+import { signup } from "../store/reducer/AuthReducer";
 
 const LeftSlider = lazy(() => import("../general/LeftSlider"));
 
@@ -13,11 +13,11 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
-    // watch,
     formState: { errors },
   } = useForm();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
 
@@ -31,8 +31,10 @@ const SignUp = () => {
         return;
       }
 
-      const response = await authApi.post("/api/users/register", data);
-      const dataResponse = await response;
+      const { payload } = await dispatch(signup(data));
+      if (!payload?.success) {
+        throw payload;
+      }
       toast.success(dataResponse?.message, {
         position: "top-center",
       });

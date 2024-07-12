@@ -16,6 +16,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.407.0",
     "react": "^18.3.1",
+    "react-avatar": "^5.0.3",
     "react-dom": "^18.3.1",
     "react-feather": "^2.0.10",
     "react-hook-form": "^7.52.1",

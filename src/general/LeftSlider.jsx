@@ -17,14 +17,13 @@ const LeftSlider = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true, // Enable autoplay
-    autoplaySpeed: 3000, // Set autoplay speed in milliseconds
+    autoplay: true,
+    autoplaySpeed: 3000,
     arrows: false,
   };
   return (
     <>
-      {/* Left Section for Image Slider */}
-      <div className="w-full lg:w-1/3 bg-red-500 flex flex-col justify-center items-center text-white h-19 hidden lg:flex">
+      <div className="w-full lg:w-1/3 bg-red-500 flex-col justify-center items-center text-white h-19 hidden lg:flex">
         <div className="flex justify-center items-center h-20">
           <div className="text-3xl font-medium">Welcome to Watchlists</div>
         </div>

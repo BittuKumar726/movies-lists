@@ -7,6 +7,8 @@ import HomeButton from "../general/HomeButton";
 import { LS_KEY_USER_TOKENS } from "../utils/constants";
 import { handleLoginNavigation } from "./Common";
 import SuspensionWrapper from "../general/Suspension";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../store/reducer/AuthReducer";
 
 const LeftSlider = lazy(() => import("../general/LeftSlider"));
 
@@ -19,31 +21,27 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const [loading, setLoading] = useState(false);
-
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.isLoading);
   const onSubmit = async (data) => {
-    setLoading(true);
     try {
-      const resData = await authApi.post("/api/users/login", data);
-
-      if (resData?.statusCode === 200) {
-        const userTokens = {
-          AccessToken: resData?.data?.accessToken,
-          RefreshToken: resData?.data?.refreshToken,
-        };
-        toast.success(resData?.message, {
-          position: "top-center",
-        });
-        localStorage.setItem(LS_KEY_USER_TOKENS, JSON.stringify(userTokens));
-        handleLoginNavigation("/home", navigate);
+      const { payload } = await dispatch(login({ ...data }));
+      if (!payload?.success) {
+        throw payload;
       }
+      const userTokens = {
+        AccessToken: payload?.data?.accessToken,
+        RefreshToken: payload?.data?.refreshToken,
+      };
+      toast.success(payload?.message, {
+        position: "top-center",
+      });
+      localStorage.setItem(LS_KEY_USER_TOKENS, JSON.stringify(userTokens));
+      handleLoginNavigation("/", navigate);
     } catch (error) {
-      console.log({ error });
       toast.error(error?.message, {
         position: "top-center",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -95,7 +93,7 @@ const Login = () => {
                   type="submit"
                   className="btn w-full  text-white py-2 px-4 rounded-md bg-red-500  hover:bg-red-300 focus:bg-red-300"
                 >
-                  {loading ? (
+                  {isLoading ? (
                     <span className="loading loading-spinner"></span>
                   ) : null}
                   Login
