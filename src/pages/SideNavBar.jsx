@@ -54,10 +54,6 @@ const SideNavBar = () => {
             <Bookmark fill="red" className="text-red-500 mr-2" size={20} />
             <span className={`text-gray-800 ml-1`}>Favorites Movies List</span>
           </Link>
-
-          <div className="flex items-center px-4 rounded-md border-1 w-[80%] cursor-pointer">
-            <h1 className="text-2xl">My Lists</h1>
-          </div>
         </nav>
 
         <div className="mt-auto px-1 mb-8 flex items-center justify-center w-full">
