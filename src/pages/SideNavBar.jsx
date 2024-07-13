@@ -26,6 +26,11 @@ const SideNavBar = () => {
     setSidebarVisible((prev) => !prev);
   };
 
+  const hideSideNavBar = () => {
+    setDropdownVisible(false);
+    setSidebarVisible(false);
+  };
+
   return (
     <div className="flex h-screen">
       <div
@@ -56,6 +61,7 @@ const SideNavBar = () => {
           <Link
             to="/"
             className="flex items-center py-2.5 px-4 rounded-md border-1 w-4/5 cursor-pointer bg-red-500"
+            onClick={hideSideNavBar}
           >
             <Home className="text-white mr-2" size={20} />
             <span className="text-white ml-1">Home</span>
@@ -65,6 +71,7 @@ const SideNavBar = () => {
           <Link
             to="/favorites"
             className="flex items-center py-2.5 px-4 rounded-md border-1 w-4/5 cursor-pointer bg-gray-200"
+            onClick={hideSideNavBar}
           >
             <Bookmark fill="red" className="text-red-500 mr-2" size={20} />
             <span className="text-gray-800 ml-1">Favorites Movies List</span>
