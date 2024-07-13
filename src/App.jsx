@@ -23,7 +23,7 @@ const AppContent = () => {
   return (
     <div className="flex app-background min-h-screen w-full">
       {!hideSideNavBar && (
-        <div className="w-[22%]">
+        <div className="lg:w-[22%] md:w-[2%]">
           <SideNavBar />
         </div>
       )}

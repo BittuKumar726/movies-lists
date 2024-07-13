@@ -95,13 +95,13 @@ const Home = () => {
     <div className="flex justify-evenly flex-col items-center container w-full mt-8">
       <div className="p-4">
         <div className="border-2 border-red-700 rounded-md p-6">
-          <h1 className="text-4xl font-bold text-black">
+          <h1 className="lg:text-4xl text-2xl font-bold text-black">
             Welcome to <span className="text-red-600">Watchlists</span>
           </h1>
-          <p className="text-gray-700 mt-4 text-2xl">
+          <p className="text-gray-700 mt-4 lg:text-2xl text-xl">
             Browse movies, add them to watchlists and share them with friends.
           </p>
-          <p className="inline-flex items-center text-gray-700 text-2xl">
+          <p className="flex flex-col md:flex-row lg:inline-flex items-center text-gray-700 lg:text-2xl text-xl">
             Just click the{" "}
             <span>
               <BookmarkPlus size={40} strokeWidth={1} />

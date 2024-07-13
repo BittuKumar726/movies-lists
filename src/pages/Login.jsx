@@ -94,7 +94,7 @@ const Login = () => {
               <div className="mb-4">
                 <button
                   type="submit"
-                  className="btn flex justify-center w-full  text-white py-2 px-4 rounded-md bg-red-500  hover:bg-red-300 focus:bg-red-300"
+                  className="btn flex justify-center w-full  text-white py-2 px-4 rounded-md bg-red-500  hover:bg-red-300"
                 >
                   {isLoading ? (
                     <LoadingSpinner size={20} color="white" />
