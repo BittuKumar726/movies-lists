@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const HomeButton = () => {
   return (
     <>
-      <div className="lg:mt-6 lg:ml-10 mt-10 ml-8 dark:text-black">
+      <div className="lg:mt-6 mb-6 lg:ml-10 ml-8 dark:text-black">
         <span className="relative flex">
           <Link to="/" className="flex gap-2">
             <svg

@@ -59,7 +59,7 @@ const SignUp = () => {
 
         <HomeButton />
 
-        <div className="w-full lg:w-2/3 flex justify-center items-center py-14">
+        <div className="w-full lg:w-2/3 flex justify-center items-center py-6">
           <div className="bg-white p-8 rounded-lg shadow-md w-96">
             <h2 className="text-2xl font-semibold mb-4">Signup</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -181,7 +181,7 @@ const SignUp = () => {
                 </button>
               </div>
               <div>
-                👉 Already have Store Account?{" "}
+                👉 Already have Account?{" "}
                 <Link
                   to="/login"
                   className="text-red-500 hover:text-red-300 focus:text-red-300"
