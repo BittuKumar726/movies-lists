@@ -64,11 +64,11 @@ const Login = () => {
                   id="email"
                   placeholder="Enter your email"
                   className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  {...register("email", { required: true })}
+                  {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
                   <span className="text-sm text-red-500">
-                    This field is required
+                    {errors.email.message}
                   </span>
                 )}
               </div>
@@ -81,11 +81,13 @@ const Login = () => {
                   id="password"
                   placeholder="Enter your password"
                   className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  {...register("password", { required: true })}
+                  {...register("password", {
+                    required: "Password is required",
+                  })}
                 />
                 {errors.password && (
                   <span className="text-sm text-red-500">
-                    This field is required
+                    {errors.password.message}
                   </span>
                 )}
               </div>

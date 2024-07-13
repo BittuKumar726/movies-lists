@@ -72,11 +72,13 @@ const SignUp = () => {
                   id="fullName"
                   placeholder="Enter your fullName"
                   className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  {...register("fullName", { required: true })}
+                  {...register("fullName", {
+                    required: "Fullname is required",
+                  })}
                 />
                 {errors.fullName && (
                   <span className="text-sm text-red-500">
-                    This field is required
+                    {errors.fullName.message}
                   </span>
                 )}
               </div>
@@ -89,11 +91,11 @@ const SignUp = () => {
                   id="email"
                   placeholder="Enter your email"
                   className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  {...register("email", { required: true })}
+                  {...register("email", { required: "Email is required" })}
                 />
                 {errors.email && (
                   <span className="text-sm text-red-500">
-                    This field is required
+                    {errors.email.message}
                   </span>
                 )}
               </div>
@@ -107,11 +109,17 @@ const SignUp = () => {
                   id="password"
                   placeholder="Enter your password"
                   className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  {...register("password", { required: true })}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                  })}
                 />
                 {errors.password && (
                   <span className="text-sm text-red-500">
-                    This field is required
+                    {errors.password.message}
                   </span>
                 )}
               </div>
@@ -128,11 +136,18 @@ const SignUp = () => {
                   id="confirmPassword"
                   placeholder="Enter your password"
                   className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  {...register("confirmPassword", { required: true })}
+                  {...register("confirmPassword", {
+                    required: "Confirm Password is required",
+                    minLength: {
+                      value: 6,
+                      message:
+                        "Confirm Password must be at least 6 characters long",
+                    },
+                  })}
                 />
                 {errors.confirmPassword && (
                   <span className="text-sm text-red-500">
-                    This field is required
+                    {errors.confirmPassword.message}
                   </span>
                 )}
               </div>
@@ -146,11 +161,11 @@ const SignUp = () => {
                   id="avatar"
                   placeholder="Upload your photo"
                   className="w-full border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-blue-500"
-                  {...register("avatar", { required: true })}
+                  {...register("avatar", { required: "Photo is required" })}
                 />
                 {errors.avatar && (
                   <span className="text-sm text-red-500">
-                    This field is required
+                    {errors.avatar.message}
                   </span>
                 )}
               </div>
